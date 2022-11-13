@@ -1,0 +1,137 @@
+list_1 = ['a','e','i','o','u','y','h','w']
+list_2 = ['b','f','p','v']
+list_3 = ['c','g','j','k','q','s','x','z']
+list_4 = ['d','t']
+list_5 = ['l']
+list_6 = ['m','n']
+list_7 = ['r']
+
+def number_converter(i):
+    numbered_name = []
+    name = list(i)
+
+    for letter in name:
+        if letter in list_1:
+            letter = '0'
+        if letter in list_2:
+            letter = '1'
+        if letter in list_3:
+            letter = '2'
+        if letter in list_4:
+            letter = '3'
+        if letter in list_5:
+            letter = '4'
+        if letter in list_6:
+            letter = '5'
+        if letter in list_7:
+            letter = '6'
+        numbered_name.append(letter)
+
+
+    numbered_name = ''.join(numbered_name)
+
+    return numbered_name
+
+def consecutive_digits(numbered_name):
+
+    name = list(map(int, numbered_name))
+
+    prev = object()
+    consecutive_digit_name = [prev := v for v in name if prev != v]
+    consecutive_digit_name = ''.join(map(str, consecutive_digit_name))
+
+
+    return consecutive_digit_name
+
+def remove_zero(consecutive_digit_name):
+    name = list(map(int, consecutive_digit_name))
+
+    for digit in name:
+        if digit == 0:
+            name.remove(0)
+
+    name_without_zeros = list(map(int, name))
+    name_without_zeros = ''.join(map(str, name_without_zeros))
+
+    return name_without_zeros
+
+def check_f(F,name_without_zeros):
+
+    i = F
+    F_to_digit = int(number_converter(i))
+    name = list(map(int, name_without_zeros))
+
+    if F_to_digit == name[0]:
+        name.remove(name[0])
+        name.insert(0,F)
+    elif F_to_digit != name[0]:
+        name.insert(0, F)
+
+
+    name_F = ''.join(map(str, name))
+
+    return name_F
+
+def edit_length(new_string_D):
+
+
+    name = list(new_string_D)
+
+    if len(name) == 4:
+        pass
+    elif len(name) > 4:
+        name = name[:4]
+    elif len(name) < 4:
+        while len(name) < 4:
+            name.append('0')
+
+    edited_name_length = ''.join(map(str, name))
+    return edited_name_length
+
+def name_pairs(names_List,converted_list):
+
+    sorted_name_list = sorted(names_List)
+    sorted_converted_list = sorted(converted_list)
+
+    for i in range(len(sorted_name_list)):
+        for j in range(i,len(sorted_name_list)):
+            if sorted_name_list[i] != sorted_name_list[j]:
+                if sorted_converted_list[i] == sorted_converted_list[j]:
+                    print(f'{sorted_name_list[i].title()} and {sorted_name_list[j].title()} have the same Soundex encoding. ')
+
+
+def main():
+
+    names_List = []
+    converted_list = []
+
+    user_Name = input('Enter names, one on each line. Type DONE to quit entering names.\n')
+
+
+    while user_Name != 'DONE':
+        names_List.append(user_Name.lower())
+        user_Name = input()
+
+    for i in names_List:
+        letter_list = list(i)
+        F = letter_list[0]
+        numbered_name = number_converter(i)
+        consecutive_digit_name = consecutive_digits(numbered_name)
+        name_without_zeros = remove_zero(consecutive_digit_name)
+
+        if len(name_without_zeros) > 0:
+            name_F = check_f(F,name_without_zeros)
+            new_string_D = name_F
+            edited_name_length = edit_length(new_string_D)
+            converted_list.append(edited_name_length)
+
+        else:
+            new_string_D = F
+            edited_name_length = edit_length(new_string_D)
+            converted_list.append(edited_name_length)
+
+    name_pairs(names_List,converted_list)
+
+
+
+main()
